@@ -65,6 +65,7 @@
       }
 
     </style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
   <body>
     <div id="app">
@@ -100,6 +101,20 @@
           </div>
         </section>
       </div>
+      <script>
+        const { createApp } = Vue
+
+        createApp({
+          computed: {
+            expression () {
+              return "Expression from computed"
+            },
+            result() {
+              return "Result from computed."
+            }
+          }
+        }).mount('#app')
+      </script>
     </div>
   </body>
 </html>
