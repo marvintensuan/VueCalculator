@@ -72,7 +72,7 @@
       <div id="calc-body">
         <section id="calc-results">
           <div id="results-expr">
-            {{ expression  }}
+            {{ inputString ? inputString : "0"  }}
           </div>
           <div id="results-eval">
             {{ result }}
@@ -80,24 +80,24 @@
         </section>
         <section>
           <div id="btn-numbers">
-            <button class="button">7</button>
-            <button class="button">8</button>
-            <button class="button">9</button>
-            <button class="button">4</button>
-            <button class="button">5</button>
-            <button class="button">6</button>
-            <button class="button">1</button>
-            <button class="button">2</button>
-            <button class="button">3</button>
-            <button class="button">C</button>
-            <button class="button">0</button>
+            <button class="button" @click="getTextContent">7</button>
+            <button class="button" @click="getTextContent">8</button>
+            <button class="button" @click="getTextContent">9</button>
+            <button class="button" @click="getTextContent">4</button>
+            <button class="button" @click="getTextContent">5</button>
+            <button class="button" @click="getTextContent">6</button>
+            <button class="button" @click="getTextContent">1</button>
+            <button class="button" @click="getTextContent">2</button>
+            <button class="button" @click="getTextContent">3</button>
+            <button class="button" @click="clearAll">C</button>
+            <button class="button" @click="getTextContent">0</button>
             <button class="button">=</button>
           </div>
           <div id="btn-ops">
-            <button class="button">&plus;</button>
-            <button class="button">&minus;</button>
-            <button class="button">&times;</button>
-            <button class="button">&divide;</button>
+            <button class="button" @click="appendOperation">&plus;</button>
+            <button class="button" @click="appendOperation">&minus;</button>
+            <button class="button" @click="appendOperation">&times;</button>
+            <button class="button" @click="appendOperation">&divide;</button>
           </div>
         </section>
       </div>
@@ -105,12 +105,35 @@
         const { createApp } = Vue
 
         createApp({
-          computed: {
-            expression () {
-              return "Expression from computed"
+          methods: {
+            getTextContent(event) {
+              let textContent = event.target.textContent
+              // console.log(textContent)
+              this.inputString += textContent
             },
-            result() {
-              return "Result from computed."
+            appendOperation(event) {
+              
+              const ops = ['+', '−', '×', '÷']
+              
+              let textContent = event.target.textContent
+              let lastChar = this.inputString.at(-1)
+
+              if (ops.indexOf(lastChar) !== -1) {
+                console.log("here")
+                this.inputString = this.inputString.slice(0, -1)
+              }
+            
+              this.inputString += textContent
+              
+            },
+            clearAll() {
+              this.inputString = ""
+            }
+          },
+          data() {
+            return {
+              inputString: "",
+              result: 0
             }
           }
         }).mount('#app')
