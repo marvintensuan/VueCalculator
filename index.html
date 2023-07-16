@@ -106,8 +106,6 @@
               this.inputString += textContent;
             },
             appendOperation(event) {
-              const ops = ["+", "−", "×", "÷"];
-
               let textContent = event.target.textContent;
               let lastChar = this.inputString.at(-1);
 
@@ -115,7 +113,7 @@
                 return;
               }
 
-              if (ops.indexOf(lastChar) !== -1) {
+              if (this.ops.indexOf(lastChar) !== -1) {
                 this.inputString = this.inputString.slice(0, -1);
               }
 
@@ -127,6 +125,7 @@
           },
           data() {
             return {
+              ops: ["+", "−", "×", "÷"],
               inputString: "",
               result: 0,
             };
