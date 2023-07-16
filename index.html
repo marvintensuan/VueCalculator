@@ -108,7 +108,6 @@
           methods: {
             getTextContent(event) {
               let textContent = event.target.textContent
-              // console.log(textContent)
               this.inputString += textContent
             },
             appendOperation(event) {
@@ -118,13 +117,15 @@
               let textContent = event.target.textContent
               let lastChar = this.inputString.at(-1)
 
+              if (lastChar === undefined) {
+                return
+              }
+
               if (ops.indexOf(lastChar) !== -1) {
-                console.log("here")
                 this.inputString = this.inputString.slice(0, -1)
               }
-            
+
               this.inputString += textContent
-              
             },
             clearAll() {
               this.inputString = ""
