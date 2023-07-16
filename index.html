@@ -71,7 +71,7 @@
       <div id="calc-body">
         <section id="calc-results">
           <div id="results-expr">{{ inputString ? inputString : "0" }}</div>
-          <div id="results-eval">{{ result }}</div>
+          <div id="results-eval">{{ isValidExpr }}</div>
         </section>
         <section>
           <div id="btn-numbers">
@@ -129,6 +129,16 @@
               inputString: "",
               result: 0,
             };
+          },
+          computed: {
+            isValidExpr() {
+              let lastChar = this.inputString.at(-1);
+              if (this.ops.indexOf(lastChar) !== -1) {
+                return false;
+              }
+
+              return true;
+            },
           },
         }).mount("#app");
       </script>
