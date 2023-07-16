@@ -23,7 +23,7 @@
         flex-direction: column;
         padding: 0.5vh;
         margin-bottom: 1rem;
-        font-family: 'Courier New';
+        font-family: "Courier New";
         background-color: #d3d3d3;
         border: 1px solid;
         align-items: flex-end;
@@ -63,7 +63,6 @@
       button.button:active {
         background-color: white;
       }
-
     </style>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
@@ -71,12 +70,8 @@
     <div id="app">
       <div id="calc-body">
         <section id="calc-results">
-          <div id="results-expr">
-            {{ inputString ? inputString : "0"  }}
-          </div>
-          <div id="results-eval">
-            {{ result }}
-          </div>
+          <div id="results-expr">{{ inputString ? inputString : "0" }}</div>
+          <div id="results-eval">{{ result }}</div>
         </section>
         <section>
           <div id="btn-numbers">
@@ -102,42 +97,41 @@
         </section>
       </div>
       <script>
-        const { createApp } = Vue
+        const { createApp } = Vue;
 
         createApp({
           methods: {
             getTextContent(event) {
-              let textContent = event.target.textContent
-              this.inputString += textContent
+              let textContent = event.target.textContent;
+              this.inputString += textContent;
             },
             appendOperation(event) {
-              
-              const ops = ['+', '−', '×', '÷']
-              
-              let textContent = event.target.textContent
-              let lastChar = this.inputString.at(-1)
+              const ops = ["+", "−", "×", "÷"];
+
+              let textContent = event.target.textContent;
+              let lastChar = this.inputString.at(-1);
 
               if (lastChar === undefined) {
-                return
+                return;
               }
 
               if (ops.indexOf(lastChar) !== -1) {
-                this.inputString = this.inputString.slice(0, -1)
+                this.inputString = this.inputString.slice(0, -1);
               }
 
-              this.inputString += textContent
+              this.inputString += textContent;
             },
             clearAll() {
-              this.inputString = ""
-            }
+              this.inputString = "";
+            },
           },
           data() {
             return {
               inputString: "",
-              result: 0
-            }
-          }
-        }).mount('#app')
+              result: 0,
+            };
+          },
+        }).mount("#app");
       </script>
     </div>
   </body>
