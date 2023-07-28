@@ -71,8 +71,7 @@
       <div id="calc-body">
         <section id="calc-results">
           <div id="results-expr">{{ inputString ? inputString : "0" }}</div>
-          <div id="results-eval">{{ getBinOpTree ? getBinOpTree : "0" }}</div>
-          <div id="results-eval">{{ evalOpTree }}</div>
+          <div id="results-eval">{{ evalOpTree(getBinOpTree) }}</div>
         </section>
         <section>
           <div id="btn-numbers">
@@ -197,6 +196,29 @@
             clearAll() {
               this.inputString = "";
             },
+            evalOpTree(node) {
+              if (!node) {
+                return null;
+              }
+
+              if (typeof node === "number") {
+                return node;
+              }
+
+              const leftValue = this.evalOpTree(node.left);
+              const rightValue = this.evalOpTree(node.right);
+
+              switch (node._op) {
+                case "+":
+                  return leftValue + rightValue;
+                case "−":
+                  return leftValue - rightValue;
+                case "×":
+                  return leftValue * rightValue;
+                case "÷":
+                  return leftValue / rightValue;
+              }
+            },
           },
           data() {
             return {
@@ -216,7 +238,6 @@
             getBinOpTree() {
               return convertStringToBinOp(this.inputString);
             },
-            evalOpTree() {},
           },
         }).mount("#app");
       </script>
