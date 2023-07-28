@@ -71,7 +71,8 @@
       <div id="calc-body">
         <section id="calc-results">
           <div id="results-expr">{{ inputString ? inputString : "0" }}</div>
-          <div id="results-eval">{{ isValidExpr }}</div>
+          <div id="results-eval">{{ getBinOpTree ? getBinOpTree : "0" }}</div>
+          <div id="results-eval">{{ evalOpTree }}</div>
         </section>
         <section>
           <div id="btn-numbers">
@@ -97,6 +98,80 @@
         </section>
       </div>
       <script>
+        class BinOp {
+          constructor(_op, left, right) {
+            this._op = _op;
+            this.left = left;
+            this.right = right;
+          }
+          toString() {
+            return `BinOp(${this.left} ${this._op} ${this.right})`;
+          }
+        }
+        function evaluateBinOp(binop) {
+          isLeftNumber = typeof binop.left === "number";
+          isRightNumber = typeof binop.right === "number";
+
+          if (isLeftNumber && isRightNumber) {
+            switch (binop._op) {
+              case "+":
+                return new BinOp("+", 0, binop.left + binop.right);
+            }
+          }
+
+          return binop;
+        }
+
+        function convertStringToBinOp(input) {
+          const operators = ["+", "−", "×", "÷"];
+          const precedences = {
+            "+": 1,
+            "−": 1,
+            "×": 2,
+            "÷": 2,
+          };
+          const stack = [];
+          let num = "";
+
+          for (let i = 0; i < input.length; i++) {
+            const char = input[i];
+
+            if (!isNaN(char)) {
+              num += char;
+            } else if (operators.includes(char)) {
+              if (num !== "") {
+                stack.push(Number(num));
+                num = "";
+              }
+
+              while (
+                stack.length >= 3 &&
+                precedences[char] <= precedences[stack[stack.length - 2]._op]
+              ) {
+                const right = stack.pop();
+                const operator = stack.pop();
+                const left = stack.pop();
+                stack.push(new BinOp(operator._op, left, right));
+              }
+
+              stack.push(new BinOp(char));
+            }
+          }
+
+          if (num !== "") {
+            stack.push(Number(num));
+          }
+
+          while (stack.length >= 3) {
+            const right = stack.pop();
+            const operator = stack.pop();
+            const left = stack.pop();
+            stack.push(new BinOp(operator._op, left, right));
+          }
+
+          return stack[0];
+        }
+
         const { createApp } = Vue;
 
         createApp({
@@ -127,7 +202,6 @@
             return {
               ops: ["+", "−", "×", "÷"],
               inputString: "",
-              result: 0,
             };
           },
           computed: {
@@ -139,6 +213,10 @@
 
               return true;
             },
+            getBinOpTree() {
+              return convertStringToBinOp(this.inputString);
+            },
+            evalOpTree() {},
           },
         }).mount("#app");
       </script>
