@@ -121,56 +121,6 @@
           return binop;
         }
 
-        function convertStringToBinOp(input) {
-          const operators = ["+", "−", "×", "÷"];
-          const precedences = {
-            "+": 1,
-            "−": 1,
-            "×": 2,
-            "÷": 2,
-          };
-          const stack = [];
-          let num = "";
-
-          for (let i = 0; i < input.length; i++) {
-            const char = input[i];
-
-            if (!isNaN(char)) {
-              num += char;
-            } else if (operators.includes(char)) {
-              if (num !== "") {
-                stack.push(Number(num));
-                num = "";
-              }
-
-              while (
-                stack.length >= 3 &&
-                precedences[char] <= precedences[stack[stack.length - 2]._op]
-              ) {
-                const right = stack.pop();
-                const operator = stack.pop();
-                const left = stack.pop();
-                stack.push(new BinOp(operator._op, left, right));
-              }
-
-              stack.push(new BinOp(char));
-            }
-          }
-
-          if (num !== "") {
-            stack.push(Number(num));
-          }
-
-          while (stack.length >= 3) {
-            const right = stack.pop();
-            const operator = stack.pop();
-            const left = stack.pop();
-            stack.push(new BinOp(operator._op, left, right));
-          }
-
-          return stack[0];
-        }
-
         const { createApp } = Vue;
 
         createApp({
@@ -195,6 +145,56 @@
             },
             clearAll() {
               this.inputString = "";
+            },
+            convertStringToBinOp(input) {
+              // const operators = ["+", "−", "×", "÷"];
+              const precedences = {
+                "+": 1,
+                "−": 1,
+                "×": 2,
+                "÷": 2,
+              };
+              const stack = [];
+              let num = "";
+
+              for (let i = 0; i < input.length; i++) {
+                const char = input[i];
+
+                if (!isNaN(char)) {
+                  num += char;
+                } else if (this.ops.includes(char)) {
+                  if (num !== "") {
+                    stack.push(Number(num));
+                    num = "";
+                  }
+
+                  while (
+                    stack.length >= 3 &&
+                    precedences[char] <=
+                      precedences[stack[stack.length - 2]._op]
+                  ) {
+                    const right = stack.pop();
+                    const operator = stack.pop();
+                    const left = stack.pop();
+                    stack.push(new BinOp(operator._op, left, right));
+                  }
+
+                  stack.push(new BinOp(char));
+                }
+              }
+
+              if (num !== "") {
+                stack.push(Number(num));
+              }
+
+              while (stack.length >= 3) {
+                const right = stack.pop();
+                const operator = stack.pop();
+                const left = stack.pop();
+                stack.push(new BinOp(operator._op, left, right));
+              }
+
+              return stack[0];
             },
             evalOpTree(node) {
               if (!node) {
@@ -236,7 +236,7 @@
               return true;
             },
             getBinOpTree() {
-              return convertStringToBinOp(this.inputString);
+              return this.convertStringToBinOp(this.inputString);
             },
           },
         }).mount("#app");
