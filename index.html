@@ -107,19 +107,6 @@
             return `BinOp(${this.left} ${this._op} ${this.right})`;
           }
         }
-        function evaluateBinOp(binop) {
-          isLeftNumber = typeof binop.left === "number";
-          isRightNumber = typeof binop.right === "number";
-
-          if (isLeftNumber && isRightNumber) {
-            switch (binop._op) {
-              case "+":
-                return new BinOp("+", 0, binop.left + binop.right);
-            }
-          }
-
-          return binop;
-        }
 
         const { createApp } = Vue;
 
