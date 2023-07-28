@@ -71,7 +71,7 @@
       <div id="calc-body">
         <section id="calc-results">
           <div id="results-expr">{{ inputString ? inputString : "0" }}</div>
-          <div id="results-eval">{{ evalOpTree(getBinOpTree) }}</div>
+          <div id="results-eval">{{ result ? result : "..." }}</div>
         </section>
         <section>
           <div id="btn-numbers">
@@ -224,6 +224,9 @@
             },
             getBinOpTree() {
               return this.convertStringToBinOp(this.inputString);
+            },
+            result() {
+              return this.evalOpTree(this.getBinOpTree);
             },
           },
         }).mount("#app");
