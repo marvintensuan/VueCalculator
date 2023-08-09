@@ -101,7 +101,7 @@
         <section id="calc-head">Cashew</section>
         <section id="calc-results">
           <div id="results-expr">{{ inputString ? inputString : "0" }}</div>
-          <div id="results-eval">{{ result ? result : "..." }}</div>
+          <div id="results-eval">{{ result ? result : "0" }}</div>
         </section>
         <section>
           <div id="btn-numbers">
@@ -116,7 +116,7 @@
             <button class="button" @click="getTextContent">3</button>
             <button class="button" @click="clearAll">C</button>
             <button class="button" @click="getTextContent">0</button>
-            <button class="button">=</button>
+            <button class="button">☺</button>
           </div>
           <div id="btn-ops">
             <button class="button" @click="appendOperation">&plus;</button>
